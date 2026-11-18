@@ -1,0 +1,2274 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turbo — Developer Portfolio</title>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* =========================================================
+           1. DESIGN TOKENS & MONOCHROME PALETTE
+           ========================================================= */
+        :root {
+            --bg-matte: #070707;
+            --bg-charcoal: #101010;
+            --bg-charcoal-hover: #161616;
+            --bg-elevated: #141414;
+            --border-hairline: #202020;
+            --border-hover: #383838;
+            --text-crisp: #F3F3F3;
+            --text-silver: #8E8E8E;
+            --text-muted: #5A5A5A;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 14px;
+            --radius-pill: 9999px;
+        }
+
+        /* =========================================================
+           2. RESET & BASE STYLES
+           ========================================================= */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            background-color: var(--bg-matte);
+            color: var(--text-crisp);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg-matte);
+            color: var(--text-crisp);
+            line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background-color: var(--text-crisp);
+            color: var(--bg-matte);
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font-family: inherit;
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        /* Custom Minimal Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-matte);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #242424;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3A3A3A;
+        }
+
+        /* =========================================================
+           3. BACKGROUND GRID & RADIAL SONAR ANIMATION
+           ========================================================= */
+        .bg-grid-pattern {
+            position: fixed;
+            inset: 0;
+            background-size: 52px 52px;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero-sonar-wrap {
+            position: absolute;
+            top: 48%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 720px;
+            height: 720px;
+            pointer-events: none;
+            z-index: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .sonar-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.055);
+            animation: sonarPulse 7s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+        }
+
+        .sonar-ring:nth-child(1) { width: 220px; height: 220px; animation-delay: 0s; }
+        .sonar-ring:nth-child(2) { width: 380px; height: 380px; animation-delay: 1.6s; }
+        .sonar-ring:nth-child(3) { width: 540px; height: 540px; animation-delay: 3.2s; }
+        .sonar-ring:nth-child(4) { width: 700px; height: 700px; animation-delay: 4.8s; }
+
+        @keyframes sonarPulse {
+            0% {
+                transform: scale(0.86);
+                opacity: 0;
+            }
+            35% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1.14);
+                opacity: 0;
+            }
+        }
+
+        /* =========================================================
+           4. LAYOUT & NAVIGATION
+           ========================================================= */
+        .container {
+            width: 100%;
+            max-width: 1060px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            width: 100%;
+            background: rgba(7, 7, 7, 0.84);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-hairline);
+        }
+
+        .navbar-inner {
+            max-width: 1060px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-mark {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 0.95rem;
+            letter-spacing: 0.24em;
+            color: var(--text-crisp);
+            transition: opacity 0.2s ease;
+        }
+        .brand-mark:hover {
+            opacity: 0.8;
+        }
+        .brand-square {
+            width: 8px;
+            height: 8px;
+            background: var(--text-crisp);
+            border-radius: 1px;
+        }
+
+        .nav-links {
+            display: none;
+            align-items: center;
+            gap: 32px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.08em;
+            color: var(--text-silver);
+        }
+        @media (min-width: 768px) {
+            .nav-links { display: flex; }
+        }
+        .nav-links a {
+            transition: color 0.2s ease;
+            padding: 6px 0;
+        }
+        .nav-links a:hover {
+            color: var(--text-crisp);
+        }
+
+        .nav-discord-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 7px 14px;
+            border-radius: var(--radius-pill);
+            background: var(--bg-charcoal);
+            border: 1px solid var(--border-hairline);
+            color: var(--text-crisp);
+            transition: all 0.25s ease;
+        }
+        .nav-discord-pill:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-charcoal-hover);
+            transform: translateY(-1px);
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #D4D4D4;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+            animation: pulseDot 2.4s infinite ease-in-out;
+        }
+        @keyframes pulseDot {
+            0%, 100% { opacity: 0.45; transform: scale(0.95); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        /* =========================================================
+           5. HERO & AUTHORITY METRICS BAR
+           ========================================================= */
+        .hero-section {
+            position: relative;
+            padding: 84px 0 64px;
+            border-bottom: 1px solid var(--border-hairline);
+            text-align: center;
+            overflow: hidden;
+        }
+        @media (min-width: 768px) {
+            .hero-section {
+                padding: 112px 0 80px;
+            }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 16px;
+            border-radius: var(--radius-pill);
+            background: var(--bg-charcoal);
+            border: 1px solid var(--border-hairline);
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--text-silver);
+            margin-bottom: 28px;
+        }
+
+        .hero-title {
+            font-size: clamp(2.45rem, 6vw, 4.35rem);
+            font-weight: 800;
+            letter-spacing: -0.035em;
+            line-height: 1.07;
+            color: var(--text-crisp);
+            margin-bottom: 18px;
+        }
+
+        .hero-subtitle {
+            display: block;
+            font-size: clamp(1.15rem, 2.5vw, 1.55rem);
+            font-weight: 500;
+            letter-spacing: -0.015em;
+            color: rgba(243, 243, 243, 0.85);
+            margin-bottom: 18px;
+        }
+
+        .hero-bio-summary {
+            font-size: 0.96rem;
+            color: var(--text-silver);
+            max-width: 560px;
+            margin: 0 auto 36px;
+            line-height: 1.65;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            max-width: 420px;
+            margin: 0 auto 56px;
+        }
+        @media (min-width: 540px) {
+            .hero-cta-group {
+                flex-direction: row;
+                max-width: none;
+            }
+        }
+
+        .btn-primary-pill {
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 28px;
+            border-radius: var(--radius-pill);
+            background: var(--text-crisp);
+            color: var(--bg-matte);
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: -0.01em;
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, box-shadow 0.25s ease;
+        }
+        @media (min-width: 540px) {
+            .btn-primary-pill { width: auto; }
+        }
+        .btn-primary-pill:hover {
+            background: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(255, 255, 255, 0.14);
+        }
+        .btn-primary-pill:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary-pill {
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 14px 26px;
+            border-radius: var(--radius-pill);
+            background: var(--bg-charcoal);
+            border: 1px solid var(--border-hairline);
+            color: var(--text-crisp);
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @media (min-width: 540px) {
+            .btn-secondary-pill { width: auto; }
+        }
+        .btn-secondary-pill:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-charcoal-hover);
+            transform: translateY(-2px);
+        }
+        .btn-secondary-pill:active {
+            transform: scale(0.98);
+        }
+
+        .pill-copy-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.72rem;
+            color: var(--text-silver);
+            padding-left: 10px;
+            border-left: 1px solid var(--border-hairline);
+        }
+        .btn-secondary-pill:hover .pill-copy-tag {
+            color: var(--text-crisp);
+        }
+
+        /* 3-Column Authority Metrics Bar */
+        .metrics-bar {
+            position: relative;
+            z-index: 2;
+            max-width: 780px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid var(--border-hairline);
+            border-bottom: 1px solid var(--border-hairline);
+            background: rgba(16, 16, 16, 0.45);
+            backdrop-filter: blur(6px);
+        }
+
+        .metric-cell {
+            padding: 22px 12px;
+            text-align: center;
+            position: relative;
+        }
+        .metric-cell:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 22%;
+            height: 56%;
+            width: 1px;
+            background: var(--border-hairline);
+        }
+
+        .metric-value {
+            font-size: clamp(1.4rem, 3.2vw, 2.05rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text-crisp);
+            line-height: 1.15;
+            margin-bottom: 4px;
+        }
+
+        .metric-label {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            color: var(--text-silver);
+            letter-spacing: 0.03em;
+        }
+        @media (min-width: 640px) {
+            .metric-label { font-size: 0.74rem; }
+        }
+
+        /* =========================================================
+           6. SHARED SECTION HEADERS & RADIAL SPOTLIGHT CARDS
+           ========================================================= */
+        .section-block {
+            padding: 76px 0;
+            border-bottom: 1px solid var(--border-hairline);
+        }
+        @media (min-width: 768px) {
+            .section-block { padding: 96px 0; }
+        }
+
+        .section-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+        .section-eyebrow span {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--text-silver);
+            white-space: nowrap;
+        }
+        .section-eyebrow .line {
+            height: 1px;
+            flex: 1;
+            background: var(--border-hairline);
+        }
+
+        .section-header-row {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 36px;
+        }
+        @media (min-width: 640px) {
+            .section-header-row {
+                flex-direction: row;
+                align-items: flex-end;
+                justify-content: space-between;
+            }
+        }
+
+        .section-title {
+            font-size: clamp(1.65rem, 3.2vw, 2.15rem);
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: var(--text-crisp);
+        }
+
+        .section-meta {
+            font-family: var(--font-mono);
+            font-size: 0.73rem;
+            color: var(--text-silver);
+            letter-spacing: 0.06em;
+        }
+
+        /* Radial Spotlight Hover Card */
+        .glow-card {
+            position: relative;
+            background: var(--bg-charcoal);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            transition: border-color 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glow-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                440px circle at var(--mouse-x, -500px) var(--mouse-y, -500px),
+                rgba(255, 255, 255, 0.055),
+                transparent 60%
+            );
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .glow-card:hover::before {
+            opacity: 1;
+        }
+
+        .glow-card:hover {
+            border-color: var(--border-hover);
+        }
+
+        .card-inner {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* =========================================================
+           7. ABOUT ME SECTION
+           ========================================================= */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 28px;
+        }
+        @media (min-width: 900px) {
+            .about-grid {
+                grid-template-columns: 5fr 7fr;
+                gap: 48px;
+                align-items: start;
+            }
+        }
+
+        .about-lead {
+            font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.3;
+            color: var(--text-crisp);
+        }
+
+        .about-copy {
+            font-size: 0.96rem;
+            color: var(--text-silver);
+            line-height: 1.75;
+        }
+        .about-copy a {
+            color: var(--text-crisp);
+            border-bottom: 1px solid var(--border-hover);
+            transition: border-color 0.2s ease;
+        }
+        .about-copy a:hover {
+            border-color: var(--text-crisp);
+        }
+
+        /* =========================================================
+           8. RELEASED WORK (VERIFIED GAME CONTRIBUTIONS)
+           ========================================================= */
+        .games-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 22px;
+        }
+        @media (min-width: 860px) {
+            .games-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .game-card-body {
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .game-meta-top {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .place-badge {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-matte);
+            border: 1px solid var(--border-hairline);
+            color: var(--text-silver);
+        }
+
+        .game-stats-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-crisp);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-hairline);
+            padding: 4px 10px;
+            border-radius: var(--radius-pill);
+        }
+
+        .game-title {
+            font-size: 1.45rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--text-crisp);
+            margin-bottom: 4px;
+        }
+
+        .game-studio {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-silver);
+            margin-bottom: 16px;
+        }
+
+        .game-desc {
+            font-size: 0.89rem;
+            color: var(--text-silver);
+            line-height: 1.65;
+            margin-bottom: 22px;
+        }
+
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-bottom: 26px;
+        }
+
+        .arch-tag {
+            font-family: var(--font-mono);
+            font-size: 0.66rem;
+            padding: 4px 9px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-matte);
+            border: 1px solid var(--border-hairline);
+            color: var(--text-silver);
+            letter-spacing: 0.03em;
+        }
+
+        .game-actions {
+            padding-top: 20px;
+            border-top: 1px solid var(--border-hairline);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        @media (min-width: 480px) {
+            .game-actions {
+                flex-direction: row;
+            }
+        }
+
+        .btn-verify {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            font-weight: 600;
+            padding: 11px 16px;
+            border-radius: var(--radius-md);
+            background: var(--text-crisp);
+            color: var(--bg-matte);
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        .btn-verify:hover {
+            background: #FFFFFF;
+            transform: translateY(-1px);
+        }
+
+        .btn-inspect {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            padding: 11px 16px;
+            border-radius: var(--radius-md);
+            background: var(--bg-matte);
+            border: 1px solid var(--border-hairline);
+            color: var(--text-crisp);
+            transition: border-color 0.2s ease, background-color 0.2s ease;
+        }
+        .btn-inspect:hover {
+            border-color: var(--text-crisp);
+            background: var(--bg-charcoal-hover);
+        }
+
+        /* =========================================================
+           9. SYSTEMS & ARCHITECTURE SHOWCASE (INTERACTIVE LUAU LAB)
+           ========================================================= */
+        .systems-shell {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        @media (min-width: 900px) {
+            .systems-shell {
+                grid-template-columns: 320px 1fr;
+                gap: 24px;
+            }
+        }
+
+        .system-tabs-list {
+            display: flex;
+            flex-direction: row;
+            overflow-x: auto;
+            gap: 10px;
+            padding-bottom: 6px;
+        }
+        @media (min-width: 900px) {
+            .system-tabs-list {
+                flex-direction: column;
+                overflow-x: visible;
+                padding-bottom: 0;
+            }
+        }
+
+        .sys-tab-btn {
+            min-width: 230px;
+            text-align: left;
+            padding: 16px 18px;
+            border-radius: var(--radius-md);
+            background: var(--bg-charcoal);
+            border: 1px solid var(--border-hairline);
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        @media (min-width: 900px) {
+            .sys-tab-btn { min-width: 0; width: 100%; }
+        }
+        .sys-tab-btn:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-charcoal-hover);
+        }
+        .sys-tab-btn.active {
+            border-color: var(--text-crisp);
+            background: var(--bg-elevated);
+        }
+
+        .sys-tab-index {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            color: var(--text-silver);
+        }
+        .sys-tab-btn.active .sys-tab-index {
+            color: var(--text-crisp);
+        }
+
+        .sys-tab-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-crisp);
+        }
+
+        .sys-tab-sub {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-silver);
+        }
+
+        /* Right Panel: Architecture Diagram + Monochrome Luau Viewer */
+        .sys-viewer-card {
+            background: var(--bg-charcoal);
+            border: 1px solid var(--border-hairline);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sys-viewer-header {
+            padding: 16px 22px;
+            background: var(--bg-matte);
+            border-bottom: 1px solid var(--border-hairline);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .window-dots {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .window-dots span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #2C2C2C;
+        }
+
+        .sys-file-path {
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            color: var(--text-silver);
+        }
+
+        .copy-code-btn {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            padding: 5px 11px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-charcoal);
+            border: 1px solid var(--border-hairline);
+            color: var(--text-silver);
+            transition: all 0.2s ease;
+        }
+        .copy-code-btn:hover {
+            color: var(--text-crisp);
+            border-color: var(--border-hover);
+        }
+
+        /* Pipeline / Architecture Flow Bar */
+        .arch-flow-bar {
+            padding: 16px 22px;
+            border-bottom: 1px solid var(--border-hairline);
+            background: rgba(255, 255, 255, 0.015);
+        }
+        .arch-flow-label {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            display: block;
+        }
+        .arch-nodes {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+        .arch-node {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            padding: 5px 10px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-matte);
+            border: 1px solid var(--border-hairline);
+            color: var(--text-crisp);
+        }
+        .arch-arrow {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .code-container {
+            padding: 20px 22px;
+            overflow-x: auto;
+            background: #0B0B0B;
+        }
+
+        .code-container pre {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            line-height: 1.65;
+            color: #D6D6D6;
+            tab-size: 4;
+        }
+
+        /* Monochrome Syntax Highlighting */
+        .tok-kw { color: #FFFFFF; font-weight: 600; }
+        .tok-fn { color: #E2E2E2; }
+        .tok-str { color: #A8A8A8; }
+        .tok-num { color: #CFCFCF; }
+        .tok-com { color: #5C5C5C; font-style: italic; }
+        .tok-type { color: #B8B8B8; }
+
+        /* =========================================================
+           10. SCRIPTING SPECIALTIES (8-ITEM SWEEP GRID)
+           ========================================================= */
+        .specialties-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+        @media (min-width: 560px) {
+            .specialties-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 920px) {
+            .specialties-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        .sweep-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .sweep-card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -110%;
+            width: 65%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.045),
+                transparent
+            );
+            transform: skewX(-20deg);
+            transition: left 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            z-index: 3;
+        }
+        .sweep-card:hover::after {
+            left: 165%;
+        }
+
+        .spec-card-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 126px;
+        }
+
+        .spec-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 22px;
+        }
+
+        .spec-icon-box {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            background: var(--bg-matte);
+            border: 1px solid var(--border-hairline);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-crisp);
+        }
+
+        .spec-num {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--text-silver);
+        }
+
+        .spec-title {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: var(--text-crisp);
+        }
+
+        /* =========================================================
+           11. UNEDITED DISCORD CLIENT FEEDBACK (6 CARDS)
+           ========================================================= */
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+        @media (min-width: 680px) {
+            .reviews-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 980px) {
+            .reviews-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        .discord-msg-card {
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 18px;
+        }
+
+        .discord-msg-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .discord-user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .discord-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: var(--bg-matte);
+            border: 1px solid var(--border-hover);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            font-weight: 600;
+            color: var(--text-crisp);
+            flex-shrink: 0;
+        }
+
+        .discord-username {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-crisp);
+            line-height: 1.2;
+        }
+
+        .discord-timestamp {
+            font-family: var(--font-mono);
+            font-size: 0.66rem;
+            color: var(--text-muted);
+        }
+
+        .verified-pill {
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            letter-spacing: 0.08em;
+            padding: 3px 8px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-matte);
+            border: 1px solid var(--border-hairline);
+            color: var(--text-silver);
+        }
+
+        .discord-msg-text {
+            font-size: 0.88rem;
+            color: rgba(243, 243, 243, 0.88);
+            line-height: 1.6;
+            padding-left: 12px;
+            border-left: 2px solid var(--border-hairline);
+        }
+
+        /* =========================================================
+           12. FOOTER & MODAL & TOAST
+           ========================================================= */
+        .footer-section {
+            padding: 64px 0 48px;
+            text-align: center;
+        }
+
+        .footer-cta-box {
+            max-width: 560px;
+            margin: 0 auto 56px;
+        }
+
+        .footer-cta-title {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 10px;
+        }
+
+        .footer-cta-sub {
+            font-size: 0.92rem;
+            color: var(--text-silver);
+            margin-bottom: 24px;
+        }
+
+        .footer-bottom {
+            padding-top: 28px;
+            border-top: 1px solid var(--border-hairline);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--text-silver);
+        }
+        @media (min-width: 600px) {
+            .footer-bottom { flex-direction: row; }
+        }
+
+        /* Modal Overlay */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            background: rgba(0, 0, 0, 0.84);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .modal-card {
+            width: 100%;
+            max-width: 680px;
+            background: var(--bg-charcoal);
+            border: 1px solid var(--border-hover);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.85);
+            animation: modalIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: translateY(12px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-head {
+            padding: 18px 24px;
+            background: var(--bg-matte);
+            border-bottom: 1px solid var(--border-hairline);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-tabs {
+            display: flex;
+            gap: 20px;
+            padding: 0 24px;
+            border-bottom: 1px solid var(--border-hairline);
+            background: var(--bg-charcoal);
+        }
+
+        .modal-tab {
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            padding: 12px 0;
+            border-bottom: 2px solid transparent;
+            color: var(--text-silver);
+            transition: all 0.2s ease;
+        }
+        .modal-tab.active {
+            border-bottom-color: var(--text-crisp);
+            color: var(--text-crisp);
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-bullets {
+            list-style: none;
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: var(--radius-md);
+            background: var(--bg-matte);
+            border: 1px solid var(--border-hairline);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            color: var(--text-crisp);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 60;
+            padding: 12px 18px;
+            border-radius: var(--radius-md);
+            background: var(--text-crisp);
+            color: var(--bg-matte);
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65);
+            transform: translateY(80px);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Scroll Reveal Utility */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Subtle Monochrome Grid Overlay -->
+    <div class="bg-grid-pattern"></div>
+
+    <!-- Navigation -->
+    <header class="navbar">
+        <div class="navbar-inner">
+            <a href="#" class="brand-mark">
+                <span class="brand-square"></span>
+                TURBO
+            </a>
+
+            <nav class="nav-links">
+                <a href="#work">RELEASED WORK</a>
+                <a href="#systems">ARCHITECTURE</a>
+                <a href="#specialties">SPECIALTIES</a>
+                <a href="#reviews">REVIEWS</a>
+            </nav>
+
+            <!-- Direct Discord Profile Link (Numeric ID hidden from display) -->
+            <a
+                href="https://discord.com/users/1004041101369417820"
+                target="_blank"
+                rel="noopener noreferrer"
+                onclick="handleDiscordClick()"
+                class="nav-discord-pill"
+                aria-label="Open Turbo's Discord Profile">
+                <span class="status-dot"></span>
+                <span>@38mh</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- 1. HERO SECTION & 2. AUTHORITY METRICS BAR -->
+    <section class="hero-section">
+        <!-- Subtle Animated Monochrome Sonar Rings -->
+        <div class="hero-sonar-wrap" aria-hidden="true">
+            <div class="sonar-ring"></div>
+            <div class="sonar-ring"></div>
+            <div class="sonar-ring"></div>
+            <div class="sonar-ring"></div>
+        </div>
+
+        <div class="container">
+            <div class="hero-content reveal visible">
+                <div class="status-badge">
+                    <span class="status-dot"></span>
+                    <span>Available for Scripting Commissions</span>
+                </div>
+
+                <h1 class="hero-title">
+                    Roblox Scripting Services
+                </h1>
+                <span class="hero-subtitle">
+                    Building systems. Creating experiences.
+                </span>
+
+                <p class="hero-bio-summary">
+                    Clean, server-authoritative Luau architecture engineered for performance under load. 17 y/o scripter with 2+ years of production experience across high-traffic Roblox titles.
+                </p>
+
+                <!-- Dual Pill CTA Buttons -->
+                <div class="hero-cta-group">
+                    <a href="#work" class="btn-primary-pill">
+                        <span>View My Work</span>
+                        <span>↓</span>
+                    </a>
+
+                    <a
+                        href="https://discord.com/users/1004041101369417820"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onclick="handleDiscordClick()"
+                        class="btn-secondary-pill">
+                        <!-- Monochrome Discord Icon -->
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
+                        </svg>
+                        <span>@38mh</span>
+                        <span class="pill-copy-tag">
+                            <span>Copy</span>
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 3-Column Authority Metrics Bar -->
+            <div class="metrics-bar reveal visible">
+                <div class="metric-cell">
+                    <div class="metric-value">50M+</div>
+                    <div class="metric-label">Contributed Game Visits</div>
+                </div>
+                <div class="metric-cell">
+                    <div class="metric-value">2+ Yrs</div>
+                    <div class="metric-label">Luau & Studio Experience</div>
+                </div>
+                <div class="metric-cell">
+                    <div class="metric-value">8+</div>
+                    <div class="metric-label">Core Systems Engineered</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="container">
+
+        <!-- 3. ABOUT ME SECTION -->
+        <section id="about" class="section-block">
+            <div class="reveal">
+                <div class="section-eyebrow">
+                    <span>01 // About Me</span>
+                    <div class="line"></div>
+                </div>
+
+                <div class="about-grid">
+                    <div>
+                        <h2 class="about-lead">
+                            Reliable systems, clean scripts, and practical solutions.
+                        </h2>
+                    </div>
+                    <div>
+                        <p class="about-copy">
+                            Hi, I'm Turbo, a 17-year-old Roblox scripter with over 2 years of experience in scripting and game development. I specialize in building gameplay systems, custom mechanics, UI functionality, and tools that help bring Roblox games to life. I've contributed scripting work to <a href="https://www.roblox.com/games/125477260390026/Shadow-Battlegrounds" target="_blank" rel="noopener noreferrer">Shadow Battlegrounds</a> and <a href="https://www.roblox.com/games/116261004959468/Dead-Planets" target="_blank" rel="noopener noreferrer">Dead Planets</a>, and I'm always looking to improve, take on new challenges, and work on interesting projects. I focus on creating reliable systems, clean scripts, and practical solutions while continuing to expand my skills as a developer.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. RELEASED WORK (VERIFIED GAME CONTRIBUTIONS) -->
+        <section id="work" class="section-block">
+            <div class="reveal">
+                <div class="section-eyebrow">
+                    <span>02 // Released Work</span>
+                    <div class="line"></div>
+                </div>
+
+                <div class="section-header-row">
+                    <h2 class="section-title">Verified Game Contributions</h2>
+                    <span class="section-meta">LIVE ROBLOX PRODUCTION TITLES</span>
+                </div>
+
+                <div class="games-grid">
+
+                    <!-- Card 1: Dead Planets -->
+                    <article class="glow-card">
+                        <div class="card-inner game-card-body">
+                            <div>
+                                <div class="game-meta-top">
+                                    <span class="place-badge">Place ID: 116261004959468</span>
+                                    <span class="game-stats-pill">26.7M+ Visits · 96% Rating</span>
+                                </div>
+
+                                <h3 class="game-title">Dead Planets</h3>
+                                <p class="game-studio">by Grumbling Games · Gameplay & Systems Scripter</p>
+
+                                <p class="game-desc">
+                                    Sci-fi survival & exploration experience ('Dead Rails' / 'R.E.P.O.' style). Contributed core gameplay mechanics, zombie/horde detection logic, space truck interaction systems, and extraction sequence scripting.
+                                </p>
+
+                                <div class="tag-row">
+                                    <span class="arch-tag">HORDE DETECTION</span>
+                                    <span class="arch-tag">SPACE TRUCK INTERACTION</span>
+                                    <span class="arch-tag">EXTRACTION SEQUENCE</span>
+                                </div>
+                            </div>
+
+                            <div class="game-actions">
+                                <a
+                                    href="https://www.roblox.com/games/116261004959468/Dead-Planets"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="btn-verify">
+                                    <span>Verify on Roblox</span>
+                                    <span>↗</span>
+                                </a>
+                                <button onclick="openGameModal('deadplanets')" class="btn-inspect">
+                                    Inspect Architecture
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Card 2: Shadow Battlegrounds -->
+                    <article class="glow-card">
+                        <div class="card-inner game-card-body">
+                            <div>
+                                <div class="game-meta-top">
+                                    <span class="place-badge">Place ID: 125477260390026</span>
+                                    <span class="game-stats-pill">23.5M+ Visits · Active PvP</span>
+                                </div>
+
+                                <h3 class="game-title">Shadow Battlegrounds</h3>
+                                <p class="game-studio">by i'm exotic · Combat & Framework Scripter</p>
+
+                                <p class="game-desc">
+                                    Fast-paced anime PvP battleground. Contributed skill-based combat state machines, M1 combo & ragdoll cancel/evasive handling, block/dash hit-detection, and cross-platform UI/input bindings (PC, Mobile, Console).
+                                </p>
+
+                                <div class="tag-row">
+                                    <span class="arch-tag">COMBAT STATE MACHINE</span>
+                                    <span class="arch-tag">M1 & EVASIVE CANCEL</span>
+                                    <span class="arch-tag">CROSS-PLATFORM INPUT</span>
+                                </div>
+                            </div>
+
+                            <div class="game-actions">
+                                <a
+                                    href="https://www.roblox.com/games/125477260390026/Shadow-Battlegrounds"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="btn-verify">
+                                    <span>Verify on Roblox</span>
+                                    <span>↗</span>
+                                </a>
+                                <button onclick="openGameModal('shadow')" class="btn-inspect">
+                                    Inspect Architecture
+                                </button>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. INTERACTIVE SYSTEMS & ARCHITECTURE SHOWCASE -->
+        <section id="systems" class="section-block">
+            <div class="reveal">
+                <div class="section-eyebrow">
+                    <span>03 // Systems & Architecture</span>
+                    <div class="line"></div>
+                </div>
+
+                <div class="section-header-row">
+                    <h2 class="section-title">Inspectable Luau Modules</h2>
+                    <span class="section-meta">MODULAR · SERVER-AUTHORITATIVE · STRICT TYPED</span>
+                </div>
+
+                <div class="systems-shell">
+                    <!-- Left: System Selector Tabs -->
+                    <div class="system-tabs-list" role="tablist">
+                        <button class="sys-tab-btn active" onclick="selectSystem(0)" id="sys-btn-0" role="tab">
+                            <span class="sys-tab-index">MODULE 01</span>
+                            <span class="sys-tab-name">Combat & Hitbox State Machine</span>
+                            <span class="sys-tab-sub">Spatial query · I-frame & ragdoll</span>
+                        </button>
+
+                        <button class="sys-tab-btn" onclick="selectSystem(1)" id="sys-btn-1" role="tab">
+                            <span class="sys-tab-index">MODULE 02</span>
+                            <span class="sys-tab-name">Modular Admin & Moderation</span>
+                            <span class="sys-tab-sub">Rank parser · DataStore audit log</span>
+                        </button>
+
+                        <button class="sys-tab-btn" onclick="selectSystem(2)" id="sys-btn-2" role="tab">
+                            <span class="sys-tab-index">MODULE 03</span>
+                            <span class="sys-tab-name">Session-Locked DataStore</span>
+                            <span class="sys-tab-sub">BindToClose · Anti-dupe queue</span>
+                        </button>
+
+                        <button class="sys-tab-btn" onclick="selectSystem(3)" id="sys-btn-3" role="tab">
+                            <span class="sys-tab-index">MODULE 04</span>
+                            <span class="sys-tab-name">Cross-Platform Input & UI</span>
+                            <span class="sys-tab-sub">PC / Console / Mobile binder</span>
+                        </button>
+                    </div>
+
+                    <!-- Right: Architecture Pipeline + Live Luau Code Viewer -->
+                    <div class="sys-viewer-card">
+                        <div class="sys-viewer-header">
+                            <div style="display:flex;align-items:center;gap:12px;">
+                                <div class="window-dots">
+                                    <span></span><span></span><span></span>
+                                </div>
+                                <span id="sys-file-path" class="sys-file-path">ServerScriptService/Combat/HitboxService.luau</span>
+                            </div>
+                            <button onclick="copyCurrentSystemCode()" class="copy-code-btn" id="copy-sys-btn">
+                                Copy Luau
+                            </button>
+                        </div>
+
+                        <!-- Architecture Pipeline Diagram -->
+                        <div class="arch-flow-bar">
+                            <span class="arch-flow-label">Execution Pipeline</span>
+                            <div id="sys-arch-nodes" class="arch-nodes"></div>
+                        </div>
+
+                        <!-- Monochrome Syntax-Highlighted Luau Snippet -->
+                        <div class="code-container">
+                            <pre id="sys-code-display"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. SCRIPTING SPECIALTIES GRID (8 ITEMS) -->
+        <section id="specialties" class="section-block">
+            <div class="reveal">
+                <div class="section-eyebrow">
+                    <span>04 // Capabilities</span>
+                    <div class="line"></div>
+                </div>
+
+                <div class="section-header-row">
+                    <h2 class="section-title">Scripting Specialties</h2>
+                    <span class="section-meta">END-TO-END GAMEPLAY ENGINEERING</span>
+                </div>
+
+                <div class="specialties-grid">
+                    <!-- 01 -->
+                    <div class="glow-card sweep-card">
+                        <div class="card-inner spec-card-body">
+                            <div class="spec-top">
+                                <div class="spec-icon-box">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="9"/><line x1="12" y1="3" x2="12" y2="7"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="3" y1="12" x2="7" y2="12"/><line x1="17" y1="12" x2="21" y2="12"/>
+                                    </svg>
+                                </div>
+                                <span class="spec-num">01</span>
+                            </div>
+                            <h3 class="spec-title">Gun & combat systems</h3>
+                        </div>
+                    </div>
+
+                    <!-- 02 -->
+                    <div class="glow-card sweep-card">
+                        <div class="card-inner spec-card-body">
+                            <div class="spec-top">
+                                <div class="spec-icon-box">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
+                                    </svg>
+                                </div>
+                                <span class="spec-num">02</span>
+                            </div>
+                            <h3 class="spec-title">Detection systems</h3>
+                        </div>
+                    </div>
+
+                    <!-- 03 -->
+                    <div class="glow-card sweep-card">
+                        <div class="card-inner spec-card-body">
+                            <div class="spec-top">
+                                <div class="spec-icon-box">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+                                        <rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="20" x2="9" y2="9"/>
+                                    </svg>
+                                </div>
+                                <span class="spec-num">03</span>
+                            </div>
+                            <h3 class="spec-title">UI / UX scripting</h3>
+                        </div>
+                    </div>
+
+                    <!-- 04 -->
+                    <div class="glow-card sweep-card">
+                        <div class="card-inner spec-card-body">
+                            <div class="spec-top">
+                                <div class="spec-icon-box">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/>
+                                    </svg>
+                                </div>
+                                <span class="spec-num">04</span>
+                            </div>
+                            <h3 class="spec-title">Matchmaking systems</h3>
+                        </div>
+                    </div>
+
+                    <!-- 05 -->
+                    <div class="glow-card sweep-card">
+                        <div class="card-inner spec-card-body">
+                            <div class="spec-top">
+                                <div class="spec-icon-box">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z"/>
+                                    </svg>
+                                </div>
+                                <span class="spec-num">05</span>
+                            </div>
+                            <h3 class="spec-title">Admin panels</h3>
+                        </div>
+                    </div>
+
+                    <!-- 06 -->
+                    <div class="glow-card sweep-card">
+                        <div class="card-inner spec-card-body">
+                            <div class="spec-top">
+                                <div class="spec-icon-box">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"/>
+                                    </svg>
+                                </div>
+                                <span class="spec-num">06</span>
+                            </div>
+                            <h3 class="spec-title">Gameplay systems</h3>
+                        </div>
+                    </div>
+
+                    <!-- 07 -->
+                    <div class="glow-card sweep-card">
+                        <div class="card-inner spec-card-body">
+                            <div class="spec-top">
+                                <div class="spec-icon-box">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+                                        <ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                                    </svg>
+                                </div>
+                                <span class="spec-num">07</span>
+                            </div>
+                            <h3 class="spec-title">Data handling</h3>
+                        </div>
+                    </div>
+
+                    <!-- 08 -->
+                    <div class="glow-card sweep-card">
+                        <div class="card-inner spec-card-body">
+                            <div class="spec-top">
+                                <div class="spec-icon-box">
+                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"/>
+                                    </svg>
+                                </div>
+                                <span class="spec-num">08</span>
+                            </div>
+                            <h3 class="spec-title">Custom systems & more</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. UNEDITED DISCORD CLIENT REVIEWS (6 CARDS) -->
+        <section id="reviews" class="section-block" style="border-bottom: none;">
+            <div class="reveal">
+                <div class="section-eyebrow">
+                    <span>05 // Client Feedback</span>
+                    <div class="line"></div>
+                </div>
+
+                <div class="section-header-row">
+                    <h2 class="section-title">What Clients Say</h2>
+                    <span class="section-meta">UNEDITED MESSAGES FROM CLIENTS ON DISCORD</span>
+                </div>
+
+                <div class="reviews-grid">
+
+                    <!-- Review 1: Jackpot -->
+                    <div class="glow-card">
+                        <div class="card-inner discord-msg-card">
+                            <div class="discord-msg-header">
+                                <div class="discord-user-info">
+                                    <div class="discord-avatar">JP</div>
+                                    <div>
+                                        <div class="discord-username">Jackpot</div>
+                                        <div class="discord-timestamp">Discord DM · Client</div>
+                                    </div>
+                                </div>
+                                <span class="verified-pill">VERIFIED</span>
+                            </div>
+                            <p class="discord-msg-text">
+                                Professional communication and solid scripting. Everything was organized and easy to work with.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Review 2: soro -->
+                    <div class="glow-card">
+                        <div class="card-inner discord-msg-card">
+                            <div class="discord-msg-header">
+                                <div class="discord-user-info">
+                                    <div class="discord-avatar">SR</div>
+                                    <div>
+                                        <div class="discord-username">soro</div>
+                                        <div class="discord-timestamp">Discord DM · Client</div>
+                                    </div>
+                                </div>
+                                <span class="verified-pill">VERIFIED</span>
+                            </div>
+                            <p class="discord-msg-text">
+                                Turbo understood what the system needed and got the functionality working properly.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Review 3: vex -->
+                    <div class="glow-card">
+                        <div class="card-inner discord-msg-card">
+                            <div class="discord-msg-header">
+                                <div class="discord-user-info">
+                                    <div class="discord-avatar">VX</div>
+                                    <div>
+                                        <div class="discord-username">vex</div>
+                                        <div class="discord-timestamp">Discord DM · Client</div>
+                                    </div>
+                                </div>
+                                <span class="verified-pill">VERIFIED</span>
+                            </div>
+                            <p class="discord-msg-text">
+                                Good work overall, systems were clean and the process was smooth.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Review 4: DEKO AR -->
+                    <div class="glow-card">
+                        <div class="card-inner discord-msg-card">
+                            <div class="discord-msg-header">
+                                <div class="discord-user-info">
+                                    <div class="discord-avatar">DA</div>
+                                    <div>
+                                        <div class="discord-username">DEKO AR</div>
+                                        <div class="discord-timestamp">Discord DM · Client</div>
+                                    </div>
+                                </div>
+                                <span class="verified-pill">VERIFIED</span>
+                            </div>
+                            <p class="discord-msg-text">
+                                Easy to work with, responsive, and delivered what was requested.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Review 5: ysalah -->
+                    <div class="glow-card">
+                        <div class="card-inner discord-msg-card">
+                            <div class="discord-msg-header">
+                                <div class="discord-user-info">
+                                    <div class="discord-avatar">YS</div>
+                                    <div>
+                                        <div class="discord-username">ysalah</div>
+                                        <div class="discord-timestamp">Discord DM · Client</div>
+                                    </div>
+                                </div>
+                                <span class="verified-pill">VERIFIED</span>
+                            </div>
+                            <p class="discord-msg-text">
+                                Great scripting work, especially the functionality and how everything connected together.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Review 6: ada -->
+                    <div class="glow-card">
+                        <div class="card-inner discord-msg-card">
+                            <div class="discord-msg-header">
+                                <div class="discord-user-info">
+                                    <div class="discord-avatar">AD</div>
+                                    <div>
+                                        <div class="discord-username">ada</div>
+                                        <div class="discord-timestamp">Discord DM · Client</div>
+                                    </div>
+                                </div>
+                                <span class="verified-pill">VERIFIED</span>
+                            </div>
+                            <p class="discord-msg-text">
+                                Solid developer, communicated well, and was helpful throughout the project.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 8. FOOTER CTA -->
+    <footer class="footer-section">
+        <div class="container">
+            <div class="footer-cta-box reveal">
+                <h2 class="footer-cta-title">Need reliable scripting for your project?</h2>
+                <p class="footer-cta-sub">
+                    Reach out on Discord with your game details, system scope, and timeline.
+                </p>
+                <a
+                    href="https://discord.com/users/1004041101369417820"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onclick="handleDiscordClick()"
+                    class="btn-primary-pill">
+                    <span>Message @38mh on Discord</span>
+                    <span>↗</span>
+                </a>
+            </div>
+
+            <div class="footer-bottom">
+                <span>TURBO © 2026 · ROBLOX LUAU DEVELOPER</span>
+                <a
+                    href="https://discord.com/users/1004041101369417820"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onclick="handleDiscordClick()"
+                    style="color:var(--text-crisp);">
+                    @38mh ↗
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- GAME ARCHITECTURE INSPECTION MODAL -->
+    <div id="game-modal" class="modal-backdrop" onclick="if(event.target===this) closeGameModal()">
+        <div class="modal-card">
+            <div class="modal-head">
+                <div>
+                    <span id="gm-eyebrow" style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-silver);display:block;">PLACE BREAKDOWN</span>
+                    <h3 id="gm-title" style="font-size:1.15rem;font-weight:700;color:var(--text-crisp);">Game Title</h3>
+                </div>
+                <button onclick="closeGameModal()" style="padding:6px;color:var(--text-silver);" aria-label="Close modal">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="modal-tabs">
+                <button class="modal-tab active" id="gm-tab-notes" onclick="switchGameModalTab('notes')">SYSTEM CONTRIBUTIONS</button>
+                <button class="modal-tab" id="gm-tab-code" onclick="switchGameModalTab('code')">LUAU PATTERN</button>
+            </div>
+
+            <div class="modal-body">
+                <div id="gm-panel-notes">
+                    <p id="gm-desc" style="font-size:0.9rem;color:var(--text-silver);line-height:1.65;"></p>
+                    <ul id="gm-bullets" class="modal-bullets"></ul>
+                    <div style="margin-top:20px;display:flex;justify-content:flex-end;">
+                        <a id="gm-link" href="#" target="_blank" rel="noopener noreferrer" class="btn-verify" style="flex:0 0 auto;padding:10px 18px;">
+                            <span>Verify on Roblox</span>
+                            <span>↗</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="gm-panel-code" style="display:none;">
+                    <div class="code-container" style="border-radius:var(--radius-md);border:1px solid var(--border-hairline);">
+                        <pre id="gm-code"></pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="toast" role="status" aria-live="polite">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/>
+        </svg>
+        <span id="toast-text">Opening Discord profile & copied @38mh</span>
+    </div>
+
+    <script>
+        /* =========================================================
+           1. SYSTEMS & ARCHITECTURE SHOWCASE DATA (4 MODULES)
+           ========================================================= */
+        const systemsData = [
+            {
+                file: "ServerScriptService/Combat/HitboxService.luau",
+                nodes: ["Client Input Buffer", "Remote Validation", "Spatial OverlapParams", "I-Frame / Block Check", "Damage & Ragdoll"],
+                rawCode: `--!strict
+local HitboxService = {}
+
+function HitboxService:QueryStrike(attacker: Player, origin: CFrame, boxSize: Vector3): { Model }
+	local character = attacker.Character
+	local root = character and character:FindFirstChild("HumanoidRootPart") :: BasePart?
+	if not root or (root.Position - origin.Position).Magnitude > 14 then
+		return {} -- Reject desynced or spoofed hitbox origins
+	end
+
+	local params = OverlapParams.new()
+	params.FilterType = Enum.RaycastFilterType.Exclude
+	params.FilterDescendantsInstances = { character }
+
+	local hits: { Model } = {}
+	for _, part in workspace:GetPartBoundsInBox(origin, boxSize, params) do
+		local targetModel = part:FindFirstAncestorOfClass("Model")
+		local humanoid = targetModel and targetModel:FindFirstChildOfClass("Humanoid")
+		if targetModel and humanoid and humanoid.Health > 0 and not targetModel:GetAttribute("IFrames") then
+			if not table.find(hits, targetModel) then
+				table.insert(hits, targetModel)
+			end
+		end
+	end
+
+	return hits
+end
+
+return HitboxService`,
+                highlightedCode: `<span class="tok-com">--!strict</span>
+<span class="tok-kw">local</span> HitboxService = {}
+
+<span class="tok-kw">function</span> HitboxService:<span class="tok-fn">QueryStrike</span>(attacker: <span class="tok-type">Player</span>, origin: <span class="tok-type">CFrame</span>, boxSize: <span class="tok-type">Vector3</span>): { <span class="tok-type">Model</span> }
+	<span class="tok-kw">local</span> character = attacker.Character
+	<span class="tok-kw">local</span> root = character <span class="tok-kw">and</span> character:FindFirstChild(<span class="tok-str">"HumanoidRootPart"</span>) :: <span class="tok-type">BasePart</span>?
+	<span class="tok-kw">if not</span> root <span class="tok-kw">or</span> (root.Position - origin.Position).Magnitude > <span class="tok-num">14</span> <span class="tok-kw">then</span>
+		<span class="tok-kw">return</span> {} <span class="tok-com">-- Reject desynced or spoofed hitbox origins</span>
+	<span class="tok-kw">end</span>
+
+	<span class="tok-kw">local</span> params = OverlapParams.new()
+	params.FilterType = Enum.RaycastFilterType.Exclude
+	params.FilterDescendantsInstances = { character }
+
+	<span class="tok-kw">local</span> hits: { <span class="tok-type">Model</span> } = {}
+	<span class="tok-kw">for</span> _, part <span class="tok-kw">in</span> workspace:GetPartBoundsInBox(origin, boxSize, params) <span class="tok-kw">do</span>
+		<span class="tok-kw">local</span> targetModel = part:FindFirstAncestorOfClass(<span class="tok-str">"Model"</span>)
+		<span class="tok-kw">local</span> humanoid = targetModel <span class="tok-kw">and</span> targetModel:FindFirstChildOfClass(<span class="tok-str">"Humanoid"</span>)
+		<span class="tok-kw">if</span> targetModel <span class="tok-kw">and</span> humanoid <span class="tok-kw">and</span> humanoid.Health > <span class="tok-num">0</span> <span class="tok-kw">and not</span> targetModel:GetAttribute(<span class="tok-str">"IFrames"</span>) <span class="tok-kw">then</span>
+			<span class="tok-kw">if not</span> table.find(hits, targetModel) <span class="tok-kw">then</span>
+				table.insert(hits, targetModel)
+			<span class="tok-kw">end</span>
+		<span class="tok-kw">end</span>
+	<span class="tok-kw">end</span>
+
+	<span class="tok-kw">return</span> hits
+<span class="tok-kw">end</span>
+
+<span class="tok-kw">return</span> HitboxService`
+            },
+            {
+                file: "ServerScriptService/Admin/CommandRegistry.luau",
+                nodes: ["Command Input", "Permission Rank Check", "Argument Resolver", "Action Execution", "DataStore Audit Log"],
+                rawCode: `--!strict
+local CommandRegistry = { Commands = {} }
+
+function CommandRegistry:Register(name: string, minRank: number, callback: (Player, { string }) -> ())
+	self.Commands[string.lower(name)] = {
+		MinRank = minRank,
+		Execute = callback,
+	}
+end
+
+function CommandRegistry:Dispatch(executor: Player, rawInput: string)
+	local tokens = string.split(rawInput, " ")
+	local cmdName = string.lower(table.remove(tokens, 1) or "")
+	local command = self.Commands[cmdName]
+	if not command then return end
+
+	local executorRank = executor:GetAttribute("AdminRank") :: number? or 0
+	if executorRank < command.MinRank then
+		return -- Insufficient permissions
+	end
+
+	task.spawn(command.Execute, executor, tokens)
+end
+
+return CommandRegistry`,
+                highlightedCode: `<span class="tok-com">--!strict</span>
+<span class="tok-kw">local</span> CommandRegistry = { Commands = {} }
+
+<span class="tok-kw">function</span> CommandRegistry:<span class="tok-fn">Register</span>(name: <span class="tok-type">string</span>, minRank: <span class="tok-type">number</span>, callback: (<span class="tok-type">Player</span>, { <span class="tok-type">string</span> }) -> ())
+	self.Commands[string.lower(name)] = {
+		MinRank = minRank,
+		Execute = callback,
+	}
+<span class="tok-kw">end</span>
+
+<span class="tok-kw">function</span> CommandRegistry:<span class="tok-fn">Dispatch</span>(executor: <span class="tok-type">Player</span>, rawInput: <span class="tok-type">string</span>)
+	<span class="tok-kw">local</span> tokens = string.split(rawInput, <span class="tok-str">" "</span>)
+	<span class="tok-kw">local</span> cmdName = string.lower(table.remove(tokens, <span class="tok-num">1</span>) <span class="tok-kw">or</span> <span class="tok-str">""</span>)
+	<span class="tok-kw">local</span> command = self.Commands[cmdName]
+	<span class="tok-kw">if not</span> command <span class="tok-kw">then return end</span>
+
+	<span class="tok-kw">local</span> executorRank = executor:GetAttribute(<span class="tok-str">"AdminRank"</span>) :: <span class="tok-type">number</span>? <span class="tok-kw">or</span> <span class="tok-num">0</span>
+	<span class="tok-kw">if</span> executorRank < command.MinRank <span class="tok-kw">then</span>
+		<span class="tok-kw">return</span> <span class="tok-com">-- Insufficient permissions</span>
+	<span class="tok-kw">end</span>
+
+	task.spawn(command.Execute, executor, tokens)
+<span class="tok-kw">end</span>
+
+<span class="tok-kw">return</span> CommandRegistry`
+            },
+            {
+                file: "ServerScriptService/Data/SessionStore.luau",
+                nodes: ["PlayerAdded", "UpdateAsync Session Lock", "Memory Cache", "Auto-Save Interval", "BindToClose Flush"],
+                rawCode: `--!strict
+local DataStoreService = game:GetService("DataStoreService")
+local PlayerStore = DataStoreService:GetDataStore("ProdPlayerData_v1")
+
+local SessionStore = { Profiles = {} }
+
+function SessionStore:LoadProfile(player: Player)
+	local key = "Player_" .. tostring(player.UserId)
+	local success, data = pcall(function()
+		return PlayerStore:UpdateAsync(key, function(current)
+			current = current or { Cash = 0, Wins = 0, SessionJobId = nil }
+			if current.SessionJobId and current.SessionJobId ~= game.JobId then
+				return nil -- Abort: active session lock on another server
+			end
+			current.SessionJobId = game.JobId
+			return current
+		end)
+	end)
+
+	if success and data then
+		self.Profiles[player] = data
+	else
+		player:Kick("Data session locked. Rejoin in a moment.")
+	end
+end
+
+return SessionStore`,
+                highlightedCode: `<span class="tok-com">--!strict</span>
+<span class="tok-kw">local</span> DataStoreService = game:GetService(<span class="tok-str">"DataStoreService"</span>)
+<span class="tok-kw">local</span> PlayerStore = DataStoreService:GetDataStore(<span class="tok-str">"ProdPlayerData_v1"</span>)
+
+<span class="tok-kw">local</span> SessionStore = { Profiles = {} }
+
+<span class="tok-kw">function</span> SessionStore:<span class="tok-fn">LoadProfile</span>(player: <span class="tok-type">Player</span>)
+	<span class="tok-kw">local</span> key = <span class="tok-str">"Player_"</span> .. tostring(player.UserId)
+	<span class="tok-kw">local</span> success, data = pcall(<span class="tok-kw">function</span>()
+		<span class="tok-kw">return</span> PlayerStore:UpdateAsync(key, <span class="tok-kw">function</span>(current)
+			current = current <span class="tok-kw">or</span> { Cash = <span class="tok-num">0</span>, Wins = <span class="tok-num">0</span>, SessionJobId = <span class="tok-kw">nil</span> }
+			<span class="tok-kw">if</span> current.SessionJobId <span class="tok-kw">and</span> current.SessionJobId ~= game.JobId <span class="tok-kw">then</span>
+				<span class="tok-kw">return nil</span> <span class="tok-com">-- Abort: active session lock on another server</span>
+			<span class="tok-kw">end</span>
+			current.SessionJobId = game.JobId
+			<span class="tok-kw">return</span> current
+		<span class="tok-kw">end</span>)
+	<span class="tok-kw">end</span>)
+
+	<span class="tok-kw">if</span> success <span class="tok-kw">and</span> data <span class="tok-kw">then</span>
+		self.Profiles[player] = data
+	<span class="tok-kw">else</span>
+		player:Kick(<span class="tok-str">"Data session locked. Rejoin in a moment."</span>)
+	<span class="tok-kw">end</span>
+<span class="tok-kw">end</span>
+
+<span class="tok-kw">return</span> SessionStore`
+            },
+            {
+                file: "StarterPlayerScripts/Core/InputBinder.luau",
+                nodes: ["ContextActionService", "Device Detection", "Dynamic Touch Button", "Cooldown HUD Tween", "Server Dispatch"],
+                rawCode: `--!strict
+local ContextActionService = game:GetService("ContextActionService")
+local InputBinder = {}
+
+function InputBinder:BindSkill(actionName: string, keyCode: Enum.KeyCode, padBtn: Enum.KeyCode, callback: () -> ())
+	ContextActionService:BindAction(actionName, function(_, state)
+		if state == Enum.UserInputState.Begin then
+			callback()
+		end
+		return Enum.ContextActionResult.Sink
+	end, true, keyCode, padBtn)
+
+	-- Configure mobile touch button position & title cleanly
+	ContextActionService:SetTitle(actionName, actionName)
+	ContextActionService:SetPosition(actionName, UDim2.new(0.72, 0, 0.45, 0))
+end
+
+return InputBinder`,
+                highlightedCode: `<span class="tok-com">--!strict</span>
+<span class="tok-kw">local</span> ContextActionService = game:GetService(<span class="tok-str">"ContextActionService"</span>)
+<span class="tok-kw">local</span> InputBinder = {}
+
+<span class="tok-kw">function</span> InputBinder:<span class="tok-fn">BindSkill</span>(actionName: <span class="tok-type">string</span>, keyCode: <span class="tok-type">Enum.KeyCode</span>, padBtn: <span class="tok-type">Enum.KeyCode</span>, callback: () -> ())
+	ContextActionService:BindAction(actionName, <span class="tok-kw">function</span>(_, state)
+		<span class="tok-kw">if</span> state == Enum.UserInputState.Begin <span class="tok-kw">then</span>
+			callback()
+		<span class="tok-kw">end</span>
+		<span class="tok-kw">return</span> Enum.ContextActionResult.Sink
+	<span class="tok-kw">end</span>, <span class="tok-kw">true</span>, keyCode, padBtn)
+
+	<span class="tok-com">-- Configure mobile touch button position & title cleanly</span>
+	ContextActionService:SetTitle(actionName, actionName)
+	ContextActionService:SetPosition(actionName, UDim2.new(<span class="tok-num">0.72</span>, <span class="tok-num">0</span>, <span class="tok-num">0.45</span>, <span class="tok-num">0</span>))
+<span class="tok-kw">end</span>
+
+<span class="tok-kw">return</span> InputBinder`
+            }
+        ];
+
+        let activeSystemIndex = 0;
+
+        function selectSystem(index) {
+            activeSystemIndex = index;
+            const sys = systemsData[index];
+
+            // Update tab active states
+            for (let i = 0; i < systemsData.length; i++) {
+                const btn = document.getElementById(`sys-btn-${i}`);
+                if (btn) btn.classList.toggle('active', i === index);
+            }
+
+            // Update file path
+            document.getElementById('sys-file-path').textContent = sys.file;
+
+            // Update architecture nodes
+            const nodesEl = document.getElementById('sys-arch-nodes');
+            nodesEl.innerHTML = sys.nodes.map((node, idx) => {
+                const arrow = idx < sys.nodes.length - 1 ? `<span class="arch-arrow">→</span>` : '';
+                return `<span class="arch-node">${node}</span>${arrow}`;
+            }).join('');
+
+            // Update highlighted code
+            document.getElementById('sys-code-display').innerHTML = sys.highlightedCode;
+        }
+
+        function copyCurrentSystemCode() {
+            const raw = systemsData[activeSystemIndex].rawCode;
+            copyToClipboard(raw, 'Copied Luau module to clipboard');
+        }
+
+        /* =========================================================
+           2. GAME MODAL DATA & CONTROLS
+           ========================================================= */
+        const gameBreakdownData = {
+            deadplanets: {
+                eyebrow: "PLACE ID: 116261004959468 // 26.7M+ VISITS · 96% RATING",
+                title: "Dead Planets — Grumbling Games",
+                desc: "Sci-fi survival & exploration experience ('Dead Rails' / 'R.E.P.O.' style). Engineered core gameplay mechanics, spatial horde detection logic, interactive space truck controls, and extraction sequence state loops.",
+                link: "https://www.roblox.com/games/116261004959468/Dead-Planets",
+                bullets: [
+                    "• Zombie & horde proximity/line-of-sight detection logic",
+                    "• Interactive space truck systems, cargo mounting & fuel/station triggers",
+                    "• Multi-stage extraction sequence countdown & server-synced round states"
+                ],
+                code: `-- Extraction Sequence & Horde Alert Loop\nlocal ExtractionController = { Active = false }\n\nfunction ExtractionController:BeginSequence(zone: BasePart, duration: number)\n\tif self.Active then return end\n\tself.Active = true\n\tworkspace:SetAttribute("ExtractionTimer", duration)\n\tHordeDirector:TriggerWave(zone.Position, "HighAlert")\nend`
+            },
+            shadow: {
+                eyebrow: "PLACE ID: 125477260390026 // 23.5M+ VISITS",
+                title: "Shadow Battlegrounds — i'm exotic",
+                desc: "Fast-paced anime PvP battleground. Built deterministic combat state machines, M1 combo chains, ragdoll cancel / evasive mechanics, block & dash hit-detection, and unified PC/Mobile/Console input bindings.",
+                link: "https://www.roblox.com/games/125477260390026/Shadow-Battlegrounds",
+                bullets: [
+                    "• Deterministic M1 combo state machine with stun & hyper-armor tags",
+                    "• Ragdoll cancel / evasive cooldown tracking & directional dash i-frames",
+                    "• Cross-platform ContextActionService bindings for PC, Mobile & Console"
+                ],
+                code: `-- Evasive / Ragdoll Cancel Validation\nlocal EvasiveService = {}\n\nfunction EvasiveService:TryCancel(player: Player)\n\tlocal char = player.Character\n\tif not char or not char:GetAttribute("Ragdolled") then return false end\n\tif (player:GetAttribute("EvasiveCD") or 0) > os.clock() then return false end\n\n\tplayer:SetAttribute("EvasiveCD", os.clock() + 30)\n\tchar:SetAttribute("Ragdolled", false)\n\tchar:SetAttribute("IFrames", true)\n\treturn true\nend`
+            }
+        };
+
+        function openGameModal(key) {
+            const data = gameBreakdownData[key];
+            if (!data) return;
+
+            document.getElementById('gm-eyebrow').textContent = data.eyebrow;
+            document.getElementById('gm-title').textContent = data.title;
+            document.getElementById('gm-desc').textContent = data.desc;
+            document.getElementById('gm-link').href = data.link;
+            document.getElementById('gm-code').textContent = data.code;
+            document.getElementById('gm-bullets').innerHTML = data.bullets.map(item => `<li>${item}</li>`).join('');
+
+            switchGameModalTab('notes');
+            document.getElementById('game-modal').classList.add('open');
+        }
+
+        function closeGameModal() {
+            document.getElementById('game-modal').classList.remove('open');
+        }
+
+        function switchGameModalTab(tab) {
+            const isNotes = tab === 'notes';
+            document.getElementById('gm-tab-notes').classList.toggle('active', isNotes);
+            document.getElementById('gm-tab-code').classList.toggle('active', !isNotes);
+            document.getElementById('gm-panel-notes').style.display = isNotes ? 'block' : 'none';
+            document.getElementById('gm-panel-code').style.display = isNotes ? 'none' : 'block';
+        }
+
+        /* =========================================================
+           3. DISCORD LINK + CLIPBOARD & TOAST NOTIFICATION
+           ========================================================= */
+        let toastTimer;
+        function copyToClipboard(text, toastMessage) {
+            const helper = document.createElement('textarea');
+            helper.value = text;
+            helper.style.position = 'fixed';
+            helper.style.left = '-9999px';
+            document.body.appendChild(helper);
+            helper.select();
+            try {
+                document.execCommand('copy');
+            } catch (e) {}
+            document.body.removeChild(helper);
+
+            showToast(toastMessage);
+        }
+
+        function handleDiscordClick() {
+            copyToClipboard('38mh', 'Opening Discord profile & copied @38mh');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-text').textContent = msg;
+            toast.classList.add('show');
+
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2600);
+        }
+
+        /* =========================================================
+           4. INITIALIZATION: CURSOR SPOTLIGHT & SCROLL REVEALS
+           ========================================================= */
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize first system tab
+            selectSystem(0);
+
+            // Cursor-following radial glow on cards
+            document.querySelectorAll('.glow-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
+                    card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
+                });
+            });
+
+            // Smooth IntersectionObserver scroll reveals
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.08 });
+
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+            // Escape key closes modal
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeGameModal();
+            });
+        });
+    </script>
+</body>
+</html>
